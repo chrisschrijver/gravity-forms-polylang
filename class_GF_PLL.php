@@ -69,15 +69,16 @@ class GF_PLL {
 
   public function register_strings() {
 
-    if(!class_exists('GFAPI') || !function_exists('pll_register_string')) return;
+    if(!preg_match('/^mlang/', $_GET['page']) || !class_exists('GFAPI') || !function_exists('pll_register_string')) return;
 
     $forms = GFAPI::get_forms();
     foreach ($forms as $form) {
       $this->form = $form;
       $this->registered_strings = array();
       $this->iterate_form($form, function($value, $key) {
-        $name = ''; // todo: suitable naming
+        $name = 'gfpll'; // todo: suitable naming
         $group = "Form #{$this->form['id']}: {$this->form['title']}";
+
         pll_register_string($name, $value, $group);
         $this->registered_strings[] = $value;
       });
